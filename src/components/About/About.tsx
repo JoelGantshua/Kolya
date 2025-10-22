@@ -28,6 +28,16 @@ const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { amount: 0.5 });
 
+  // Code de débogage pour la vidéo
+  useEffect(() => {
+    console.log('Chemin de la vidéo:', aboutVideo);
+    if (videoRef.current) {
+      console.log('Élément vidéo trouvé');
+      videoRef.current.oncanplay = () => console.log('La vidéo est prête à être lue');
+      videoRef.current.onerror = (e) => console.error('Erreur de chargement de la vidéo:', e);
+    }
+  }, []);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -103,6 +113,7 @@ const About = () => {
                 loop 
                 playsInline
                 preload="auto"
+                autoPlay
               >
                 <source src={aboutVideo} type="video/mp4" />
                 Votre navigateur ne supporte pas la lecture de vidéos.

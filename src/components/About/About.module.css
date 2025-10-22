@@ -1,9 +1,15 @@
 .about {
   position: relative;
   padding: 8rem 0;
-  overflow: hidden;
   background-color: #f9f9f9;
-  color: #333; /* Set default text color to dark */
+  color: #333;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
 }
 
 .videoWrapper {
@@ -13,14 +19,13 @@
   margin: 0 auto;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  order: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .videoContainer {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  padding-top: 56.25%; /* ratio 16:9 */
   background: #000;
 }
 
@@ -34,61 +39,14 @@
   display: block;
 }
 
-.videoOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.playButton {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: var(--primary);
-}
-
-.playButton:hover {
-  transform: scale(1.1);
-  background: white;
-}
-
-.playButton svg {
-  width: 24px;
-  height: 24px;
-  margin-left: 5px;
-}
-
-.aboutGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-
+/* Texte et stats */
 .aboutContent {
-  position: relative;
-  z-index: 2;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 0 auto;
   text-align: center;
+  margin: 0 auto;
 }
 
 .sectionSubtitle {
@@ -118,18 +76,18 @@
   font-family: 'Playfair Display', serif;
   font-size: 2.8rem;
   font-weight: 700;
-  line-height: 1.2;
+  color: #222;
   margin-bottom: 1.5rem;
-  color: #222; /* Darker color for better contrast */
 }
 
 .aboutText {
-  color: #444; /* Slightly darker than default for better readability */
+  color: #444;
   margin-bottom: 1.5rem;
   line-height: 1.6;
   font-size: 1.1rem;
 }
 
+/* Stats */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -139,10 +97,10 @@
 
 .statItem {
   text-align: center;
-  padding: 1.5rem 1rem;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
 }
 
 .statIconWrapper {
@@ -168,88 +126,15 @@
 .statLabel {
   font-size: 0.9rem;
   color: var(--text-light);
-  margin: 0;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (min-width: 992px) {
   .aboutGrid {
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
   }
-  
-  .videoWrapper {
-    order: 0; /* Reset order for desktop */
-  }
-  
+
   .aboutContent {
     text-align: left;
-    margin: 0;
-  }
-}
-
-@media (max-width: 1200px) {
-  .sectionTitle {
-    font-size: 2.5rem;
-  }
-  
-  .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 992px) {
-  .aboutGrid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-  
-  .videoWrapper {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .sectionTitle {
-    font-size: 2.2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .about {
-    padding: 5rem 0;
-  }
-  
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
-  .sectionTitle {
-    font-size: 2rem;
-  }
-  
-  .aboutText {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .sectionTitle {
-    font-size: 1.8rem;
-  }
-  
-  .playButton {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .playButton svg {
-    width: 20px;
-    height: 20px;
   }
 }

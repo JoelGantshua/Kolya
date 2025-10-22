@@ -2,9 +2,11 @@ import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { FaUtensils, FaAward, FaLeaf } from 'react-icons/fa';
 import { useEffect, useRef } from 'react';
-import { useInView } from 'framer-motion';
 import styles from './About.module.css';
-import aboutVideo from '../../assets/about-video.mp4.mp4';
+
+// ✅ Mets ta vidéo dans : public/video/about-video.mp4
+// puis modifie le chemin ci-dessous :
+const aboutVideo = '/video/about-video.mp4';
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -25,38 +27,16 @@ const item: Variants = {
 
 const About = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { amount: 0.5 });
 
-  // Code de débogage pour la vidéo
-  useEffect(() => {
-    console.log('Chemin de la vidéo:', aboutVideo);
-    if (videoRef.current) {
-      console.log('Élément vidéo trouvé');
-      videoRef.current.oncanplay = () => console.log('La vidéo est prête à être lue');
-      videoRef.current.onerror = (e) => console.error('Erreur de chargement de la vidéo:', e);
-    }
-  }, []);
-
+  // ✅ Joue la vidéo dès le montage (pas de dépendance à la vue)
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isInView) {
-      // Try to play the video
-      const playPromise = video.play();
-      
-      // Handle autoplay restrictions
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log('Autoplay prevented:', error);
-        });
-      }
-    } else {
-      // Pause when not in view
-      video.pause();
-    }
-  }, [isInView]);
+    video.play().catch((error) => {
+      console.log('Lecture auto bloquée :', error);
+    });
+  }, []);
 
   const stats = [
     { id: 1, icon: <FaUtensils className={styles.statIcon} />, number: '50+', label: 'Plats uniques' },
@@ -65,15 +45,16 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className={styles.about} ref={sectionRef}>
+    <section id="about" className={styles.about}>
       <div className="container">
         <div className={styles.aboutGrid}>
+          {/* Texte à gauche */}
           <motion.div
             className={styles.aboutContent}
             variants={container}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: true }}
           >
             <motion.span className={styles.sectionSubtitle} variants={item}>
               Notre Histoire
@@ -99,18 +80,19 @@ const About = () => {
             </motion.div>
           </motion.div>
 
+          {/* Vidéo à droite */}
           <motion.div
             className={styles.videoWrapper}
             initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } }}
-            viewport={{ once: true, margin: '-100px' }}
+            whileInView={{ opacity: 1, x: 0, transition: { duration: 0.8 } }}
+            viewport={{ once: true }}
           >
             <div className={styles.videoContainer}>
-              <video 
+              <video
                 ref={videoRef}
-                className={styles.video} 
-                muted 
-                loop 
+                className={styles.video}
+                muted
+                loop
                 playsInline
                 preload="auto"
                 autoPlay
@@ -118,7 +100,7 @@ const About = () => {
                 <source src={aboutVideo} type="video/mp4" />
                 Votre navigateur ne supporte pas la lecture de vidéos.
               </video>
-              <div className={styles.videoOverlay}></div>
+              {/* Retrait de l’overlay qui assombrissait et faisait disparaître la vidéo */}
             </div>
           </motion.div>
         </div>

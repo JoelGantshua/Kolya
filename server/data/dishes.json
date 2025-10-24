@@ -1,0 +1,20 @@
+[
+    {
+      "name": "Poulet Braisé",
+      "description": "Poulet mariné et grillé, servi avec des plantains et de la sauce piquante",
+      "price": 3500,
+      "category": "Plats principaux",
+      "ingredients": ["Poulet", "Épices", "Oignons", "Piments"],
+      "isVegetarian": false,
+      "isSpicy": true
+    },
+    {
+      "name": "Poisson Braisé",
+      "description": "Poisson frais grillé, servi avec du riz et de la sauce tomate",
+      "price": 4500,
+      "category": "Plats principaux",
+      "ingredients": ["Poisson", "Oignons", "Tomates", "Piments", "Épices"],
+      "isVegetarian": false,
+      "isSpicy": true
+    }
+  ]

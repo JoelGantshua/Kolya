@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiShoppingCart, FiPlus, FiMinus, FiX, FiCheck } from 'react-icons/fi';
 import type { MenuItem as MenuItemType, CartItem } from '../../types/menu';
-import { menuData } from '../../data/menuData';
+import { menuData } from '../../../server/data/menuData.ts';
 import MenuItem from './MenuItem.tsx';
 import styles from './Menu.module.css';
 

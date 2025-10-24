@@ -6,6 +6,7 @@ import OrdersPage from './OrdersPage';
 import ReservationsPage from './ReservationsPage';
 import MessagesPage from './ContactMessagesPage';
 import UsersPage from './UsersPage';
+import DishesPage from './DishesPage';
 import Login from '../Login/Login';
 import authService from '../../services/auth';
 
@@ -50,6 +51,7 @@ const DashboardRoutes = () => {
         <Route path="reservations" element={<ReservationsPage />} />
         <Route path="messages" element={<MessagesPage />} />
         <Route path="users" element={<UsersPage />} />
+        <Route path="dishes" element={<DishesPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>
@@ -61,7 +63,7 @@ const OrderDetailPage = () => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Détails de la commande</h2>
-      <p>Page de détails de la commande</p>
+      {/* Contenu de la page de détails de commande */}
     </div>
   );
 };

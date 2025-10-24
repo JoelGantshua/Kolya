@@ -1,0 +1,8 @@
+[
+    {
+      "name": "Admin",
+      "email": "admin@kolya.com",
+      "password": "$2a$10$XFDq3zXUJQzXcL5XvLwTQO6V1J8XxY7ZvJXyZzXxY7ZvJXyZzXxY7Z",
+      "role": "admin"
+    }
+  ]

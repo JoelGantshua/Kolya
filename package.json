@@ -4,17 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+  "start": "NODE_ENV=production node server.js",
+  "dev": "nodemon server.js",
+  "seed": "node scripts/seed.js -i",
+  "seed:delete": "node scripts/seed.js -d"
+},
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-slick": "^0.23.13",
     "axios": "^1.12.2",
+    "express-async-handler": "^1.2.0",
     "framer-motion": "^12.23.24",
+    "multer": "^2.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",
@@ -22,6 +24,7 @@
     "react-router-dom": "^7.9.4",
     "react-slick": "^0.31.0",
     "slick-carousel": "^1.8.1",
+    "socket.io": "^4.8.1",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {

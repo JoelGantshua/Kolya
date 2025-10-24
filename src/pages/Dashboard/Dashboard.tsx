@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiHome, FiShoppingBag, FiCalendar, FiMail, FiUsers, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiHome, FiShoppingBag, FiCalendar, FiMail, FiUsers, FiLogOut, FiCoffee } from 'react-icons/fi';
 import styles from './Dashboard.module.css';
 
 const Dashboard = () => {
@@ -10,6 +10,7 @@ const Dashboard = () => {
 
   const menuItems = [
     { icon: <FiHome />, label: 'Tableau de bord', path: '/dashboard' },
+    { icon: <FiCoffee />, label: 'Plats', path: '/dashboard/dishes' },
     { icon: <FiShoppingBag />, label: 'Commandes', path: '/dashboard/orders' },
     { icon: <FiCalendar />, label: 'Réservations', path: '/dashboard/reservations' },
     { icon: <FiMail />, label: 'Messages', path: '/dashboard/messages' },

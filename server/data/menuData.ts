@@ -1,4 +1,4 @@
-import type { MenuItem } from '../types/menu';
+import type { MenuItem } from '../../src/types/menu';
 
 export const menuData: MenuItem[] = [
   // Petit-déjeuner

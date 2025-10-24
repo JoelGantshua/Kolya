@@ -7,6 +7,7 @@ import ReservationsPage from './ReservationsPage';
 import MessagesPage from './ContactMessagesPage';
 import UsersPage from './UsersPage';
 import Login from '../Login/Login';
+import authService from '../../services/auth';
 
 const DashboardRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -14,16 +15,18 @@ const DashboardRoutes = () => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const authStatus = localStorage.getItem('isAuthenticated') === 'true';
-      setIsAuthenticated(authStatus);
+      setIsAuthenticated(authService.isAuthenticated());
     };
 
     checkAuth();
-    const handleStorageChange = () => checkAuth();
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    
+    // Vérifier périodiquement l'état d'authentification
+    const interval = setInterval(checkAuth, 60000); // Toutes les minutes
+    
+    return () => clearInterval(interval);
   }, []);
 
+  // Afficher un indicateur de chargement pendant la vérification de l'authentification
   if (isAuthenticated === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -32,8 +35,8 @@ const DashboardRoutes = () => {
     );
   }
 
+  // Rediriger vers la page de connexion si non authentifié
   if (!isAuthenticated) {
-    // Rediriger vers /login si non authentifié
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
@@ -54,13 +57,13 @@ const DashboardRoutes = () => {
 };
 
 // Page de détails temporaire
-const OrderDetailPage = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold mb-6">Détails de la commande</h1>
-    <div className="bg-white rounded-lg shadow p-6">
-      <p>Fonctionnalité à venir - Détails de la commande</p>
+const OrderDetailPage = () => {
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Détails de la commande</h2>
+      <p>Page de détails de la commande</p>
     </div>
-  </div>
-);
+  );
+};
 
 export { DashboardRoutes as default };

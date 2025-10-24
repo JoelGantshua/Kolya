@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { FiLock, FiMail, FiLogIn } from 'react-icons/fi';
+import authService from '../../services/auth';
 import styles from './Login.module.css';
 
 const Login = () => {
@@ -11,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Récupère la page demandée avant redirection
+  // Récupère la page demandée avant redirection
   const from = (location.state as { from?: string })?.from || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,15 +27,14 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      // Simulation d'une requête API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Connexion réussie → stocker l'état dans localStorage
-      localStorage.setItem('isAuthenticated', 'true');
-
-      // ✅ Redirige vers la page d'origine ou vers /dashboard
-      navigate(from, { replace: true });
-
+      const result = await authService.login({ email, password });
+      
+      if (result.success) {
+        // Redirige vers la page d'origine ou vers /dashboard
+        navigate(from, { replace: true });
+      } else {
+        setError(result.error || 'Identifiants incorrects');
+      }
     } catch (err) {
       setError('Une erreur est survenue lors de la connexion');
       console.error('Login error:', err);
@@ -66,6 +66,7 @@ const Login = () => {
                 placeholder="votre@email.com"
                 disabled={isLoading}
                 className={styles.formControl}
+                autoComplete="username"
               />
             </div>
           </div>
@@ -87,6 +88,7 @@ const Login = () => {
                 placeholder="••••••••"
                 disabled={isLoading}
                 className={styles.formControl}
+                autoComplete="current-password"
               />
             </div>
           </div>
@@ -98,7 +100,7 @@ const Login = () => {
           >
             {isLoading ? 'Connexion en cours...' : (
               <>
-                <FiLogIn style={{ marginRight: '8px' }} />
+                <FiLogIn className={styles.btnIcon} />
                 Se connecter
               </>
             )}

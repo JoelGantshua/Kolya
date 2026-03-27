@@ -16,9 +16,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-@5k7*no+lwvabi8kuxclmkqnc3k9*3n4rzr5to=j$b$#kr+kgr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'www.restaurantkolya.com', 'restaurantkolya.com', 'kolya-seven.vercel.app', '.vercel.app']
+ALLOWED_HOSTS = [
+    'localhost', 
+    '127.0.0.1', 
+    '0.0.0.0', 
+    'www.restaurantkolya.com', 
+    'restaurantkolya.com', 
+    'kolya-seven.vercel.app', 
+    '.vercel.app',
+    '.railway.app',  # Autoriser tous les domaines Railway
+    'kolya-production.up.railway.app'
+]
 
 # Logging configuration for production debugging
 LOGGING = {

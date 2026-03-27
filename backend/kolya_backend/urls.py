@@ -31,7 +31,19 @@ def db_check(request):
             "traceback": traceback.format_exc() if settings.DEBUG else "Traceback hidden"
         }, status=500)
 
+def root_view(request):
+    """Simple root endpoint to confirm server is up"""
+    return JsonResponse({
+        "status": "online",
+        "message": "Bienvenue sur l'API Kolya",
+        "endpoints": {
+            "health": "/api/v1/health/",
+            "admin": "/admin/"
+        }
+    })
+
 urlpatterns = [
+    path('', root_view),  # Racine
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include('authentication.urls')),
     path('api/v1/dishes/', include('dishes.urls')),

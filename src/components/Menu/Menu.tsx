@@ -2,27 +2,69 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiShoppingCart, FiPlus, FiMinus, FiX, FiCheck } from 'react-icons/fi';
 import type { MenuItem as MenuItemType, CartItem } from '../../types/menu';
-import { menuData } from '../../../server/data/menuData.ts';
+import api from '../../services/api';
 import MenuItem from './MenuItem.tsx';
 import styles from './Menu.module.css';
 
 const Menu = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [menuItems, setMenuItems] = useState<MenuItemType[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
   const categories = [
     { id: 'all', name: 'Tout le menu' },
-    { id: 'breakfast', name: 'Petit-déjeuner' },
-    { id: 'lunch', name: 'Déjeuner' },
-    { id: 'dinner', name: 'Dîner' },
-    { id: 'desserts', name: 'Desserts' },
-    { id: 'drinks', name: 'Boissons' },
+    { id: 'appetizer', name: 'Entrées' },
+    { id: 'main_course', name: 'Plats principaux' },
+    { id: 'dessert', name: 'Desserts' },
+    { id: 'beverage', name: 'Boissons' },
+    { id: 'soup', name: 'Soupes' },
+    { id: 'salad', name: 'Salades' },
   ];
 
-  const filteredItems = menuData.filter((item) => {
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        setIsLoading(true);
+        // Utilisation de l'endpoint correct de l'API Django
+        const { data } = await api.get('/dishes/list/');
+        
+        // Mapping des données de l'API vers MenuItemType
+        if (data && data.success && data.data) {
+          const mappedItems: MenuItemType[] = data.data.map((item: any) => ({
+            id: item.id.toString(),
+            name: item.name,
+            description: item.description,
+            price: parseFloat(item.price),
+            category: item.category,
+            image: item.image || '/images/default-dish.jpg',
+            ingredients: item.ingredients || [],
+            isPopular: item.is_popular || false,
+            isVegetarian: item.is_vegetarian || false,
+            isSpicy: item.is_spicy || false,
+            isVegan: item.is_vegan || false,
+            isGlutenFree: item.is_gluten_free || false,
+            calories: item.calories || 0
+          }));
+          setMenuItems(mappedItems);
+        }
+        setError(null);
+      } catch (err: any) {
+        console.error('Error fetching menu:', err);
+        setError('Une erreur est survenue lors du chargement du menu. Veuillez réessayer plus tard.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMenu();
+  }, []);
+
+  const filteredItems = menuItems.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -166,27 +208,37 @@ const Menu = () => {
 
         {/* Liste des plats */}
         <div className={styles.menuItems}>
-          <AnimatePresence>
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item) => (
-                <MenuItem 
-                  key={item.id} 
-                  item={item} 
-                  onAddToCart={addToCart}
-                />
-              ))
-            ) : (
-              <div style={{ 
-                gridColumn: '1 / -1', 
-                textAlign: 'center', 
-                padding: '3rem 0',
-                color: '#7f8c8d'
-              }}>
-                <h3>Aucun plat trouvé</h3>
-                <p>Essayez de modifier vos critères de recherche ou de sélectionner une autre catégorie.</p>
-              </div>
-            )}
-          </AnimatePresence>
+          {isLoading ? (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem 0' }}>
+              <p>Chargement du menu...</p>
+            </div>
+          ) : error ? (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem 0', color: '#e74c3c' }}>
+              <p>{error}</p>
+            </div>
+          ) : (
+            <AnimatePresence>
+              {filteredItems.length > 0 ? (
+                filteredItems.map((item) => (
+                  <MenuItem 
+                    key={item.id} 
+                    item={item} 
+                    onAddToCart={addToCart}
+                  />
+                ))
+              ) : (
+                <div style={{ 
+                  gridColumn: '1 / -1', 
+                  textAlign: 'center', 
+                  padding: '3rem 0',
+                  color: '#7f8c8d'
+                }}>
+                  <h3>Aucun plat trouvé</h3>
+                  <p>Essayez de modifier vos critères de recherche ou de sélectionner une autre catégorie.</p>
+                </div>
+              )}
+            </AnimatePresence>
+          )}
         </div>
       </div>
 
